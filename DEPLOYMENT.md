@@ -208,6 +208,52 @@ php artisan view:cache
 
 **ملاحظة:** جميع حزم `require-dev` تم إضافتها إلى `dont-discover` في `composer.json` لمنع هذه المشاكل في المستقبل.
 
+### 2.6 حل مشكلة "Unable to prepare route for serialization. Another route has already been assigned name"
+
+إذا ظهرت رسالة الخطأ:
+```
+Unable to prepare route [envato/purchase-code/verify/process] for serialization. 
+Another route has already been assigned name [LaravelInstaller::codeVerifyProcess].
+```
+
+**الحل:**
+
+هذا الخطأ يحدث بسبب وجود route مكرر بنفس الاسم. الحل:
+
+```bash
+# 1. افتح الملف التالي للتعديل:
+nano vendor/safiull/laravel-installer/src/Routes/web.php
+
+# 2. ابحث عن السطر 122-128 وقم بتغيير:
+# من:
+Route::group(['prefix' => 'envato', 'as' => 'LaravelInstaller::', ...
+
+# إلى:
+Route::group(['prefix' => 'envato', 'as' => 'LaravelVerifier::', ...
+
+# 3. احفظ الملف (Ctrl+X ثم Y ثم Enter)
+
+# 4. قم بتنظيف الـ cache:
+php artisan route:clear
+php artisan config:clear
+php artisan cache:clear
+
+# 5. قم بإعادة بناء الـ cache:
+php artisan route:cache
+php artisan config:cache
+```
+
+**أو استخدم هذا الأمر السريع:**
+
+```bash
+# استبدال مباشر باستخدام sed (على Linux/Mac)
+sed -i "s/'as' => 'LaravelInstaller::'/'as' => 'LaravelVerifier::'/g" vendor/safiull/laravel-installer/src/Routes/web.php
+
+# ثم قم بتنظيف وإعادة بناء الـ cache:
+php artisan route:clear
+php artisan route:cache
+```
+
 ### 3. حل مشكلة "Please provide a valid cache path"
 
 بعد رفع المشروع على السيرفر، إذا ظهرت رسالة الخطأ:
