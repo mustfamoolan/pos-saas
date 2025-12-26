@@ -216,7 +216,18 @@ Unable to prepare route [envato/purchase-code/verify/process] for serialization.
 Another route has already been assigned name [LaravelInstaller::codeVerifyProcess].
 ```
 
-**الحل:**
+**الحل التلقائي (الأسهل):**
+
+تم إضافة سكريبت تلقائي في `composer.json` يطبق الإصلاح تلقائيًا بعد `composer install` أو `composer update`. 
+
+إذا قمت بحذف `vendor` وأعدت التثبيت، السكريبت سيطبق الإصلاح تلقائيًا:
+
+```bash
+# بعد composer install أو composer update، السكريبت يعمل تلقائيًا
+composer install --no-dev --optimize-autoloader
+```
+
+**الحل اليدوي:**
 
 هذا الخطأ يحدث بسبب وجود route مكرر بنفس الاسم. الحل:
 
