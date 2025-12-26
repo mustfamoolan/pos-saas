@@ -80,7 +80,12 @@
             "dont-discover": [
                 "nunomaduro/collision",
                 "spatie/laravel-ignition",
-                "laravel/breeze"
+                "laravel/breeze",
+                "laravel/sail",
+                "laravel/pint",
+                "fakerphp/faker",
+                "mockery/mockery",
+                "phpunit/phpunit"
             ]
         }
     },
