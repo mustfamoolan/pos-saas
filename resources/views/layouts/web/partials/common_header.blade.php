@@ -65,8 +65,8 @@
                         </div>
                     </div>
 
-                    <a href="{{ $page_data['headings']['header_btn_link'] ?? '' }}" class="get-app-btn">
-                        {{ $page_data['headings']['header_btn_text'] ?? '' }}
+                    <a href="{{ (isset($page_data['headings']['header_btn_link']) && Route::has($page_data['headings']['header_btn_link'])) ? route($page_data['headings']['header_btn_link']) : (isset($page_data['headings']['header_btn_link']) ? $page_data['headings']['header_btn_link'] : route('login')) }}" class="get-app-btn">
+                        {{ $page_data['headings']['header_btn_text'] ?? 'Login' }}
                         <i class="fa-solid fa-arrow-right"></i>
                     </a>
                 </div>
@@ -113,8 +113,8 @@
                     </li>
                 </ul>
 
-                <a href="{{ $page_data['headings']['header_btn_link'] ?? '' }}" class="get-app-btn">
-                    {{ $page_data['headings']['header_btn_text'] ?? '' }}
+                <a href="{{ (isset($page_data['headings']['header_btn_link']) && Route::has($page_data['headings']['header_btn_link'])) ? route($page_data['headings']['header_btn_link']) : (isset($page_data['headings']['header_btn_link']) ? $page_data['headings']['header_btn_link'] : route('login')) }}" class="get-app-btn">
+                    {{ $page_data['headings']['header_btn_text'] ?? 'Login' }}
                     <i class="fa-solid fa-arrow-right"></i>
                 </a>
             </div>
