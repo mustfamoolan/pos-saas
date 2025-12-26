@@ -1,3 +1,7 @@
+@php
+    $headerBtnLink = $page_data['headings']['header_btn_link'] ?? 'login';
+    $headerBtnUrl = Route::has($headerBtnLink) ? route($headerBtnLink) : (filter_var($headerBtnLink, FILTER_VALIDATE_URL) ? $headerBtnLink : route('login'));
+@endphp
 <header class="header-section">
     <nav class="navbar navbar-expand-lg p-0">
         <div class="container">
@@ -65,7 +69,7 @@
                         </div>
                     </div>
 
-                    <a href="{{ (isset($page_data['headings']['header_btn_link']) && Route::has($page_data['headings']['header_btn_link'])) ? route($page_data['headings']['header_btn_link']) : (isset($page_data['headings']['header_btn_link']) ? $page_data['headings']['header_btn_link'] : route('login')) }}" class="get-app-btn">
+                    <a href="{{ $headerBtnUrl }}" class="get-app-btn">
                         {{ $page_data['headings']['header_btn_text'] ?? 'Login' }}
                         <i class="fa-solid fa-arrow-right"></i>
                     </a>
@@ -113,7 +117,7 @@
                     </li>
                 </ul>
 
-                <a href="{{ (isset($page_data['headings']['header_btn_link']) && Route::has($page_data['headings']['header_btn_link'])) ? route($page_data['headings']['header_btn_link']) : (isset($page_data['headings']['header_btn_link']) ? $page_data['headings']['header_btn_link'] : route('login')) }}" class="get-app-btn">
+                <a href="{{ $headerBtnUrl }}" class="get-app-btn">
                     {{ $page_data['headings']['header_btn_text'] ?? 'Login' }}
                     <i class="fa-solid fa-arrow-right"></i>
                 </a>

@@ -1,3 +1,7 @@
+@php
+    $headerBtnLink = $page_data['headings']['header_btn_link'] ?? 'login';
+    $headerBtnUrl = Route::has($headerBtnLink) ? route($headerBtnLink) : (filter_var($headerBtnLink, FILTER_VALIDATE_URL) ? $headerBtnLink : route('login'));
+@endphp
 <header class="header-section home-header">
     <nav class="navbar navbar-expand-lg p-0">
         <div class="container">
@@ -9,7 +13,7 @@
                     src="{{ asset($general->value['logo'] ?? 'assets/images/icons/upload-icon.svg') }}"
                     alt="header-logo" /></a>
 
-            <a href="{{ (isset($page_data['headings']['header_btn_link']) && Route::has($page_data['headings']['header_btn_link'])) ? route($page_data['headings']['header_btn_link']) : route('login') }}"  class="get-app-btn login-btn ">
+            <a href="{{ $headerBtnUrl }}"  class="get-app-btn login-btn ">
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
                     xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -122,7 +126,7 @@
                             href="{{ route('contact.index') }}">{{ __('Contact Us') }}</a>
                     </li>
                 </ul>
-                <a href="{{ (isset($page_data['headings']['header_btn_link']) && Route::has($page_data['headings']['header_btn_link'])) ? route($page_data['headings']['header_btn_link']) : route('login') }}"
+                <a href="{{ $headerBtnUrl }}"
                     class="get-app-btn">
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
