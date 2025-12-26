@@ -162,13 +162,51 @@ php artisan config:clear
 php artisan config:cache
 ```
 
-### ملاحظة عامة حول حزم Dev:
+### 2.5 حل عام لجميع مشاكل Service Providers من حزم Dev
 
-جميع الحزم في `require-dev` يجب إضافتها إلى `dont-discover` في Production لتجنب هذه المشاكل. الحزم الشائعة التي تحتاج إلى إضافتها:
+إذا ظهرت رسالة خطأ مشابهة:
+```
+Class "PackageName\ServiceProvider" not found
+```
+
+**الحل الشامل:**
+
+تم إضافة جميع حزم `require-dev` إلى `dont-discover` في `composer.json`:
 - `nunomaduro/collision`
 - `spatie/laravel-ignition`
 - `laravel/breeze`
-- أي حزمة أخرى في `require-dev` يتم اكتشافها تلقائياً
+- `laravel/sail`
+- `laravel/pint`
+- `fakerphp/faker`
+- `mockery/mockery`
+- `phpunit/phpunit`
+
+**على السيرفر، قم بتنفيذ:**
+
+```bash
+# 1. سحب التحديثات
+git pull origin main
+
+# 2. تنظيف جميع الـ cache
+php artisan config:clear
+php artisan cache:clear
+php artisan route:clear
+php artisan view:clear
+
+# 3. حذف ملفات الـ cache القديمة
+rm -rf bootstrap/cache/*.php
+rm -rf storage/framework/cache/data/*
+
+# 4. تحديث autoloader
+composer dump-autoload --optimize --no-dev
+
+# 5. إعادة بناء الـ cache
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+```
+
+**ملاحظة:** جميع حزم `require-dev` تم إضافتها إلى `dont-discover` في `composer.json` لمنع هذه المشاكل في المستقبل.
 
 ### 3. حل مشكلة "Please provide a valid cache path"
 
