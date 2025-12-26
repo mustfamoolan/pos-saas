@@ -252,7 +252,26 @@ sed -i "s/'as' => 'LaravelInstaller::'/'as' => 'LaravelVerifier::'/g" vendor/saf
 # ثم قم بتنظيف وإعادة بناء الـ cache:
 php artisan route:clear
 php artisan route:cache
+php artisan config:cache
 ```
+
+**أو استخدم السكريبت التلقائي (الأسهل):**
+
+```bash
+# 1. سحب التحديثات من GitHub
+git pull origin main
+
+# 2. جعل السكريبت قابل للتنفيذ
+chmod +x fix-route-conflict.sh
+
+# 3. تشغيل السكريبت
+./fix-route-conflict.sh
+```
+
+السكريبت سيقوم تلقائيًا بـ:
+- إصلاح اسم الـ route المكرر
+- تنظيف جميع الـ caches
+- إعادة بناء الـ caches
 
 ### 3. حل مشكلة "Please provide a valid cache path"
 
