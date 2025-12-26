@@ -12,6 +12,12 @@ class BlogController extends Controller
     public function index()
     {
         $page_data = get_option('manage-pages');
+        
+        // Ensure page_data has headings key
+        if (!isset($page_data['headings']) || !is_array($page_data['headings'])) {
+            $page_data['headings'] = [];
+        }
+        
         $recent_blogs = Blog::with('user:id,name')->whereStatus(1)->latest()->take(3)->get();
         $blogs = Blog::with('user:id,name')->whereStatus(1)->take(10)->get();
         $general = Option::where('key','general')->first();
@@ -22,6 +28,12 @@ class BlogController extends Controller
     public function show(string $slug)
     {
         $page_data = get_option('manage-pages');
+        
+        // Ensure page_data has headings key
+        if (!isset($page_data['headings']) || !is_array($page_data['headings'])) {
+            $page_data['headings'] = [];
+        }
+        
         $blog = Blog::where('slug', $slug)->firstOrFail();
         $recent_blogs = Blog::with('user:id,name')->select('id', 'title', 'slug', 'image', 'user_id', 'created_at', 'updated_at')->whereStatus(1)->latest()->limit(3)->get();
         $comments = Comment::with('blog:id')->whereStatus(1)->where('blog_id', $blog->id)->latest()->limit(3)->get();

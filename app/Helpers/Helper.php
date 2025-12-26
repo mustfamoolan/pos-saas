@@ -25,7 +25,19 @@ function cache_remember(string $key, callable $callback, int $ttl = 5000): mixed
 function get_option($key)
 {
     return cache_remember($key, function () use ($key) {
-        return Option::where('key', $key)->first()->value ?? [];
+        $option = Option::where('key', $key)->first();
+        if (!$option || !$option->value) {
+            return [];
+        }
+        
+        // If value is JSON string, decode it
+        $value = $option->value;
+        if (is_string($value)) {
+            $decoded = json_decode($value, true);
+            return $decoded !== null ? $decoded : [];
+        }
+        
+        return is_array($value) ? $value : [];
     });
 }
 
