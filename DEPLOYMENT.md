@@ -131,6 +131,45 @@ php artisan config:clear
 php artisan config:cache
 ```
 
+### 2.4 حل مشكلة "Class Laravel\Breeze\BreezeServiceProvider not found"
+
+إذا ظهرت رسالة الخطأ:
+```
+Class "Laravel\Breeze\BreezeServiceProvider" not found
+```
+
+**الحل:**
+
+هذا الخطأ يحدث لأن Laravel يحاول تحميل Laravel Breeze (وهو حزمة dev فقط) في بيئة Production. الحل:
+
+```bash
+# الطريقة 1: تنظيف الـ cache وإعادة التثبيت
+php artisan config:clear
+php artisan cache:clear
+composer dump-autoload --optimize --no-dev
+
+# الطريقة 2: إذا استمرت المشكلة، قم بحذف ملفات الـ cache:
+rm -rf bootstrap/cache/*.php
+rm -rf storage/framework/cache/data/*
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+
+# الطريقة 3: تأكد من أن composer.json محدث (يجب أن يحتوي على dont-discover لـ laravel/breeze)
+# ثم قم بتشغيل:
+composer dump-autoload --optimize --no-dev
+php artisan config:clear
+php artisan config:cache
+```
+
+### ملاحظة عامة حول حزم Dev:
+
+جميع الحزم في `require-dev` يجب إضافتها إلى `dont-discover` في Production لتجنب هذه المشاكل. الحزم الشائعة التي تحتاج إلى إضافتها:
+- `nunomaduro/collision`
+- `spatie/laravel-ignition`
+- `laravel/breeze`
+- أي حزمة أخرى في `require-dev` يتم اكتشافها تلقائياً
+
 ### 3. حل مشكلة "Please provide a valid cache path"
 
 بعد رفع المشروع على السيرفر، إذا ظهرت رسالة الخطأ:
