@@ -39,6 +39,36 @@ php composer.phar install --no-dev --optimize-autoloader
 composer install --no-dev --optimize-autoloader
 ```
 
+### 2.1 حل مشكلة "Class Illuminate\Foundation\ComposerScripts is not autoloadable"
+
+إذا ظهرت رسالة الخطأ:
+```
+Class Illuminate\Foundation\ComposerScripts is not autoloadable, can not call post-autoload-dump script
+Script @php artisan package:discover --ansi handling the post-autoload-dump event returned with error code 255
+```
+
+**الحل:**
+
+هذا الخطأ يحدث لأن Composer يحاول تشغيل scripts قبل اكتمال تثبيت Laravel Framework. الحل:
+
+```bash
+# الطريقة 1: تثبيت بدون scripts أولاً
+composer install --no-dev --optimize-autoloader --no-scripts
+
+# ثم بعد اكتمال التثبيت، قم بتشغيل scripts يدوياً:
+php artisan package:discover --ansi
+php artisan vendor:publish --tag=laravel-assets --ansi --force
+
+# الطريقة 2: إذا استمرت المشكلة، قم بحذف vendor وإعادة التثبيت:
+rm -rf vendor composer.lock
+composer install --no-dev --optimize-autoloader --no-scripts
+php artisan package:discover --ansi
+
+# الطريقة 3: إذا كان هناك مشكلة في composer.lock، قم بتحديثه:
+composer update --no-dev --optimize-autoloader --no-scripts
+php artisan package:discover --ansi
+```
+
 ### 3. حل مشكلة "Please provide a valid cache path"
 
 بعد رفع المشروع على السيرفر، إذا ظهرت رسالة الخطأ:
