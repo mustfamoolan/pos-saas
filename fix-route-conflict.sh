@@ -15,10 +15,13 @@ if [ ! -f "$ROUTES_FILE" ]; then
 fi
 
 # Fix the route name conflict
-sed -i "s/'as' => 'LaravelInstaller::'/'as' => 'LaravelVerifier::'/g" "$ROUTES_FILE"
+# Change the second route group from LaravelInstaller:: to LaravelEnvato::
+# This is the route group at line 122
+sed -i "122s/'as' => 'LaravelInstaller::'/'as' => 'LaravelEnvato::'/" "$ROUTES_FILE"
+sed -i "122s/'as' => 'LaravelVerifier::'/'as' => 'LaravelEnvato::'/" "$ROUTES_FILE"
 
 # Verify the change
-if grep -q "'as' => 'LaravelVerifier::'" "$ROUTES_FILE"; then
+if grep -q "'as' => 'LaravelEnvato::'" "$ROUTES_FILE"; then
     echo "✓ Route name fixed successfully!"
 else
     echo "✗ Failed to fix route name. Please check manually."

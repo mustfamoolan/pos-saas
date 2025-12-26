@@ -227,9 +227,11 @@ nano vendor/safiull/laravel-installer/src/Routes/web.php
 # 2. ابحث عن السطر 122-128 وقم بتغيير:
 # من:
 Route::group(['prefix' => 'envato', 'as' => 'LaravelInstaller::', ...
+# أو
+Route::group(['prefix' => 'envato', 'as' => 'LaravelVerifier::', ...
 
 # إلى:
-Route::group(['prefix' => 'envato', 'as' => 'LaravelVerifier::', ...
+Route::group(['prefix' => 'envato', 'as' => 'LaravelEnvato::', ...
 
 # 3. احفظ الملف (Ctrl+X ثم Y ثم Enter)
 
@@ -247,7 +249,9 @@ php artisan config:cache
 
 ```bash
 # استبدال مباشر باستخدام sed (على Linux/Mac)
-sed -i "s/'as' => 'LaravelInstaller::'/'as' => 'LaravelVerifier::'/g" vendor/safiull/laravel-installer/src/Routes/web.php
+# تغيير السطر 122 فقط من LaravelInstaller:: أو LaravelVerifier:: إلى LaravelEnvato::
+sed -i "122s/'as' => 'LaravelInstaller::'/'as' => 'LaravelEnvato::'/" vendor/safiull/laravel-installer/src/Routes/web.php
+sed -i "122s/'as' => 'LaravelVerifier::'/'as' => 'LaravelEnvato::'/" vendor/safiull/laravel-installer/src/Routes/web.php
 
 # ثم قم بتنظيف وإعادة بناء الـ cache:
 php artisan route:clear
